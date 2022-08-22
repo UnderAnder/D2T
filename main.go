@@ -40,7 +40,10 @@ func tgSender(msg chan string, cfg Config) {
 		log.Fatalln("Telegram err:", err)
 	}
 
-	// bot.Debug = true
+	if cfg.Debug {
+		bot.Debug = true
+	}
+
 	log.Printf("Telegram: Authorized on account %s", bot.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
@@ -67,15 +70,16 @@ func discordGrabber(msg chan string, cfg Config) {
 		if err != nil {
 			log.Println("Can't get Discord channel:", err)
 		}
-		log.Println(channel.Name, c.ChannelID.String())
-		log.Println(c.Author.Username, "sent", c.Content)
+		if cfg.Debug {
+			log.Println(channel.Name, c.ChannelID.String())
+			log.Println(c.Author.Username, "sent", c.Content)
+		}
 		for _, ch := range cfg.DiscordWhiteList {
 			chID, err := strconv.ParseInt(c.ChannelID.String(), 10, 64)
 			if err != nil {
 				log.Println("can't parse ChannelID", err)
 			}
 			if chID == ch {
-				log.Println("WHITE LIST")
 				msg <- c.Author.Username + ": " + c.Content
 				if len(c.Attachments) != 0 {
 					for _, a := range c.Attachments {

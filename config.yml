@@ -2,4 +2,4 @@ discord_login:
 discord_password:
 telegram_apitoken:
 telegram_channel:
-discord_channels_white_list:   # [ID, ID]
+discord_channels_white_list: [513726817178484749, 535809295741222912, 893415494072295428]  # [ID, ID]
