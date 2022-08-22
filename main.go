@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/diamondburned/arikawa/gateway"
@@ -13,9 +15,17 @@ import (
 
 func main() {
 	var cfg Config
-	err := cleanenv.ReadConfig("config.yml", &cfg)
+	var cfgPath string
+
+	fset := flag.NewFlagSet("D2T", flag.ContinueOnError)
+	fset.StringVar(&cfgPath, "cfg", "config.yml", "path to config file")
+	fset.Usage = cleanenv.FUsage(fset.Output(), &cfg, nil, fset.Usage)
+	fset.Parse(os.Args[1:])
+
+	cleanenv.ReadConfig(cfgPath, &cfg)
+	err := cleanenv.ReadConfig(".env", &cfg)
 	if err != nil {
-		log.Println("Config err:", err)
+		log.Fatalln(".env err:", err)
 	}
 
 	msg := make(chan string)
