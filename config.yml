@@ -1,0 +1,5 @@
+discord_login:
+discord_password:
+telegram_apitoken:
+telegram_channel:
+discord_channels_white_list:   # [ID, ID]
