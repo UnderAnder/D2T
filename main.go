@@ -37,10 +37,10 @@ func main() {
 func tgSender(msg chan string, cfg Config) {
 	bot, err := tgbotapi.NewBotAPI(cfg.TelegramApiToken)
 	if err != nil {
-		panic(err)
+		log.Fatalln("Telegram err:", err)
 	}
 
-	bot.Debug = true
+	// bot.Debug = true
 	log.Printf("Telegram: Authorized on account %s", bot.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
@@ -77,6 +77,11 @@ func discordGrabber(msg chan string, cfg Config) {
 			if chID == ch {
 				log.Println("WHITE LIST")
 				msg <- c.Author.Username + ": " + c.Content
+				if len(c.Attachments) != 0 {
+					for _, a := range c.Attachments {
+						msg <- a.URL
+					}
+				}
 			}
 		}
 	})
