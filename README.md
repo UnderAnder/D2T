@@ -2,8 +2,6 @@
 ## forward messages from selected Discrord channels to Telegram channel
 
 ### Installation
-
-Build the bot binary using the make target `build`:
 ```shell script
 go build -o ./D2T .
 ```
