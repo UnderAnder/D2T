@@ -1,4 +1,4 @@
-module github.com/UnderAnder/BlissSpy
+module github.com/UnderAnder/D2T
 
 go 1.19
 
