@@ -1,14 +1,15 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 
-	"github.com/diamondburned/arikawa/gateway"
-	"github.com/diamondburned/arikawa/session"
+	"github.com/diamondburned/arikawa/v3/gateway"
+	"github.com/diamondburned/arikawa/v3/session"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ilyakaznacheev/cleanenv"
 )
@@ -61,7 +62,9 @@ func tgSender(msg chan string, cfg Config) {
 }
 
 func discordGrabber(msg chan string, cfg Config) {
-	s, err := session.Login(cfg.DiscordLogin, cfg.DiscordPassword, "")
+	ctx := context.TODO()
+	userAgent := "Mozilla/5.0 (Macintosh; Intel Mac OS X 12.5; rv:104.0) Gecko/20100101 Firefox/104.0"
+	s, err := session.Login(ctx, cfg.DiscordLogin, cfg.DiscordPassword, userAgent, "")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -90,7 +93,7 @@ func discordGrabber(msg chan string, cfg Config) {
 		}
 	})
 
-	if err := s.Open(); err != nil {
+	if err := s.Open(ctx); err != nil {
 		log.Fatalln("Failed to connect:", err)
 	}
 	defer s.Close()
